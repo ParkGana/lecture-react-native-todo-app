@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import CheckboxChecked from '../assets/checkbox-checked.svg'
 import CheckboxUnchecked from '../assets/checkbox-unchecked.svg'
 import Delete from '../assets/delete.svg'
+import { deleteTodo, updateTodo } from '../redux/slices/todoSlice'
 
 interface TodoItemProps {
     id: number
@@ -11,9 +13,11 @@ interface TodoItemProps {
 }
 
 const TodoItem = (props: TodoItemProps) => {
+    const dispatch = useDispatch()
+
     return (
         <View style={styles.ItemContainer}>
-            <Pressable hitSlop={10} style={styles.CheckboxContainer}>
+            <Pressable hitSlop={10} style={styles.CheckboxContainer} onPress={() => dispatch(updateTodo(props.id))}>
                 {props.state === 'todo' ? (
                     <CheckboxUnchecked />
                 ) : (
@@ -21,7 +25,7 @@ const TodoItem = (props: TodoItemProps) => {
                 )}
             </Pressable>
             <Text style={[styles.ItemText, props.state === 'done' && styles.ItemDoneText]}>{props.text}</Text>
-            <Pressable hitSlop={10}>
+            <Pressable hitSlop={10} onPress={() => dispatch(deleteTodo(props.id))}>
                 <Delete style={props.state === 'done' && styles.DeleteDoneIcon} />
             </Pressable>
         </View>

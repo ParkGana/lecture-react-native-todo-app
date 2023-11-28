@@ -5,6 +5,7 @@ import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { ErrorMessage } from '../error.message'
+import Toast from 'react-native-toast-message'
 
 type NavigationPage = {
     SignIn: undefined
@@ -30,14 +31,13 @@ const SignUpScreen = () => {
             try {
                 await createUserWithEmailAndPassword(auth, email, password)
 
-                Alert.alert(
-                    '회원가입이 완료되었습니다.',
-                    '로그인 페이지로 이동합니다.',
-                    [{ text: '확인', onPress: () => navigation.replace('SignIn') }],
-                    {
-                        cancelable: false
-                    }
-                )
+                Toast.show({
+                    type: 'success',
+                    text1: '회원가입 성공',
+                    text2: `${email}으로 가입되었습니다.`
+                })
+
+                navigation.replace('SignIn')
             } catch (error: any) {
                 Alert.alert('회원가입 도중에 문제가 발생했습니다.', ErrorMessage(error.message), [{ text: '확인' }], {
                     cancelable: false

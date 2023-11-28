@@ -5,6 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase'
 import { ErrorMessage } from '../error.message'
+import Toast from 'react-native-toast-message'
 
 type NavigationPage = {
     Main: undefined
@@ -21,14 +22,13 @@ const SignInScreen = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password)
 
-            Alert.alert(
-                '로그인이 완료되었습니다.',
-                '메인 페이지로 이동합니다.',
-                [{ text: '확인', onPress: () => navigation.replace('Main') }],
-                {
-                    cancelable: false
-                }
-            )
+            Toast.show({
+                type: 'success',
+                text1: '로그인 성공',
+                text2: `${email}으로 접속되었습니다.`
+            })
+
+            navigation.replace('Main')
         } catch (error: any) {
             Alert.alert('로그인 도중에 문제가 발생했습니다.', ErrorMessage(error.message), [{ text: '닫기' }], {
                 cancelable: false

@@ -4,15 +4,25 @@ import CheckboxChecked from '../assets/checkbox-checked.svg'
 import CheckboxUnchecked from '../assets/checkbox-unchecked.svg'
 import Delete from '../assets/delete.svg'
 
-const TodoItem = ({ state }: { state: string }) => {
+interface TodoItemProps {
+    id: number
+    text: string
+    state: string
+}
+
+const TodoItem = (props: TodoItemProps) => {
     return (
         <View style={styles.ItemContainer}>
             <Pressable hitSlop={10} style={styles.CheckboxContainer}>
-                {state === 'todo' ? <CheckboxUnchecked /> : <CheckboxChecked style={styles.CheckboxCheckedIcon} />}
+                {props.state === 'todo' ? (
+                    <CheckboxUnchecked />
+                ) : (
+                    <CheckboxChecked style={styles.CheckboxCheckedIcon} />
+                )}
             </Pressable>
-            <Text style={[styles.ItemText, state === 'done' && styles.ItemDoneText]}>TODO ITEM</Text>
+            <Text style={[styles.ItemText, props.state === 'done' && styles.ItemDoneText]}>{props.text}</Text>
             <Pressable hitSlop={10}>
-                <Delete style={state === 'done' && styles.DeleteDoneIcon} />
+                <Delete style={props.state === 'done' && styles.DeleteDoneIcon} />
             </Pressable>
         </View>
     )

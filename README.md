@@ -22,3 +22,7 @@ npm install @reduxjs/toolkit react-redux redux --save
 
 npm install @react-navigation/native @react-navigation/native-stack  
 expo install react-native-screens react-native-safe-area-context
+
+#### firebase 사용
+
+npm install firebase

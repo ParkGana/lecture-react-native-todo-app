@@ -13,3 +13,7 @@ metro.config.ts 파일 생성
 npm install react-native-svg --save
 npm install -D react-native-svg-transformer
 npx expo install --fix
+
+##### redux 사용
+
+npm install @reduxjs/toolkit react-redux redux --save

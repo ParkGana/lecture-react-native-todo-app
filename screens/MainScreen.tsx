@@ -1,12 +1,24 @@
-import { Platform, SafeAreaView, StyleSheet, Text, View, StatusBar, FlatList } from 'react-native'
+import {
+    Platform,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    View,
+    StatusBar,
+    FlatList,
+    TouchableOpacity,
+    Alert
+} from 'react-native'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import InputForm from '../components/InputForm'
 import TodoItem from '../components/TodoItem'
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import Logout from '../assets/logout.svg'
+import { ErrorMessage } from '../error.message'
 
 type NavigationPage = {
     SignIn: undefined
@@ -27,10 +39,27 @@ const MainScreen = () => {
         })
     }, [])
 
+    const handleLogout = async () => {
+        try {
+            await signOut(auth)
+
+            navigation.replace('SignIn')
+        } catch (error: any) {
+            Alert.alert('로그아웃 도중에 문제가 발생했습니다.', ErrorMessage('logout-failed'), [{ text: '닫기' }], {
+                cancelable: false
+            })
+        }
+    }
+
     return (
         <SafeAreaView style={styles.PageContainer}>
             <StatusBar />
-            <Text style={styles.PageTitle}>TODO APP</Text>
+            <View style={styles.HeaderContainer}>
+                <Text style={styles.PageTitle}>TODO APP</Text>
+                <TouchableOpacity style={styles.LogoutIcon} onPress={handleLogout}>
+                    <Logout />
+                </TouchableOpacity>
+            </View>
             <View style={styles.ListContainer}>
                 <Text style={styles.ListTitle}>해야할 일</Text>
                 {todoItems.length > 0 ? (
@@ -70,10 +99,19 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingTop: Platform.OS === 'android' ? 20 : 0
     },
+    HeaderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 30
+    },
     PageTitle: {
-        marginBottom: 30,
         fontSize: 50,
         fontWeight: '700'
+    },
+    LogoutIcon: {
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     ListContainer: {
         flex: 1

@@ -1,24 +1,78 @@
-import { StyleSheet, SafeAreaView, Text, View, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet, SafeAreaView, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
+import React, { useState } from 'react'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../firebase'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { ErrorMessage } from '../error.message'
 
+type NavigationPage = {
+    SignIn: undefined
+}
 const SignUpScreen = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<NavigationPage>>()
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    const handleSubmit = async () => {
+        if (password !== confirmPassword) {
+            Alert.alert(
+                '회원가입 도중에 문제가 발생했습니다.',
+                ErrorMessage('password-not-matched'),
+                [{ text: '확인' }],
+                {
+                    cancelable: false
+                }
+            )
+        } else {
+            try {
+                await createUserWithEmailAndPassword(auth, email, password)
+
+                Alert.alert(
+                    '회원가입이 완료되었습니다.',
+                    '로그인 페이지로 이동합니다.',
+                    [{ text: '확인', onPress: () => navigation.replace('SignIn') }],
+                    {
+                        cancelable: false
+                    }
+                )
+            } catch (error: any) {
+                Alert.alert('회원가입 도중에 문제가 발생했습니다.', ErrorMessage(error.message), [{ text: '확인' }], {
+                    cancelable: false
+                })
+            }
+        }
+    }
+
     return (
         <SafeAreaView style={styles.PageContainer}>
             <Text style={styles.PageTitle}>Sign Up</Text>
             <View style={styles.InputContainer}>
-                <TextInput style={styles.InputField} placeholder={'이메일을 입력해 주세요.'} />
-                <TextInput style={styles.InputField} placeholder={'비밀번호를 입력해 주세요.'} secureTextEntry />
+                <TextInput
+                    style={styles.InputField}
+                    placeholder={'이메일을 입력해 주세요.'}
+                    onChangeText={(text) => setEmail(text)}
+                />
+                <TextInput
+                    style={styles.InputField}
+                    placeholder={'비밀번호를 입력해 주세요.'}
+                    onChangeText={(text) => setPassword(text)}
+                    secureTextEntry
+                />
                 <TextInput
                     style={styles.InputField}
                     placeholder={'비밀번호를 한 번 더 입력해 주세요.'}
+                    onChangeText={(text) => setConfirmPassword(text)}
                     secureTextEntry
                 />
             </View>
             <View style={styles.ButtonContainer}>
-                <TouchableOpacity style={styles.Button}>
+                <TouchableOpacity style={styles.Button} onPress={handleSubmit}>
                     <Text style={styles.ButtonText}>회원가입</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.SubButton}>
+                <TouchableOpacity style={styles.SubButton} onPress={() => navigation.replace('SignIn')}>
                     <Text style={styles.SubButtonText}>로그인</Text>
                 </TouchableOpacity>
             </View>

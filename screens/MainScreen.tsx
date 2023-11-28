@@ -1,13 +1,31 @@
 import { Platform, SafeAreaView, StyleSheet, Text, View, StatusBar, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import InputForm from '../components/InputForm'
 import TodoItem from '../components/TodoItem'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../firebase'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+
+type NavigationPage = {
+    SignIn: undefined
+}
 
 const MainScreen = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<NavigationPage>>()
+
     const todos = useSelector((state: any) => state.todo.todos)
     const todoItems = todos.filter((item: any) => item.state === 'todo')
     const doneItems = todos.filter((item: any) => item.state === 'done')
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                navigation.replace('SignIn')
+            }
+        })
+    }, [])
 
     return (
         <SafeAreaView style={styles.PageContainer}>

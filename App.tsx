@@ -13,9 +13,9 @@ export default function App() {
         <Provider store={store}>
             <NavigationContainer>
                 <Stack.Navigator>
+                    <Stack.Screen options={{ headerShown: false }} name="Main" component={MainScreen} />
                     <Stack.Screen options={{ headerShown: false }} name="SignIn" component={SignInScreen} />
                     <Stack.Screen options={{ headerShown: false }} name="SignUp" component={SignUpScreen} />
-                    <Stack.Screen options={{ headerShown: false }} name="Main" component={MainScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>

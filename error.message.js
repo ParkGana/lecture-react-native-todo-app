@@ -7,6 +7,10 @@ export function ErrorMessage(message) {
             return '이미 사용 중인 이메일입니다.'
         case 'password-not-matched':
             return '비밀번호가 일치하지 않습니다.'
+        // 로그인
+        case 'Firebase: Error (auth/invalid-credential).':
+            return '아이디 또는 비밀번호가 일치하지 않습니다.'
+
         default:
             return '잠시 후 다시 시도해 주세요.'
     }

@@ -6,7 +6,9 @@
 
 npx create-expo-app . -t expo-template-blank-typescript
 
-#### svg 사용
+<br/>
+
+### svg 사용
 
 declaration.d.ts 파일 생성  
 metro.config.ts 파일 생성  
@@ -14,19 +16,28 @@ npm install react-native-svg --save
 npm install -D react-native-svg-transformer  
 npx expo install --fix
 
-#### redux 사용
+<br/>
+
+### redux 사용
 
 npm install @reduxjs/toolkit react-redux redux --save
 
-#### navigation 사용
+<br/>
+
+### navigation 사용
 
 npm install @react-navigation/native @react-navigation/native-stack  
 expo install react-native-screens react-native-safe-area-context
 
-#### firebase 사용
+<br/>
 
+### firebase 사용
+
+firebase.js 파일 생성  
 npm install firebase
 
-#### toast 사용
+<br/>
+
+### toast 사용
 
 npm install react-native-toast-message --save

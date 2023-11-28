@@ -1,11 +1,30 @@
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addTodo } from '../redux/slices/todoSlice'
 
 const InputForm = () => {
+    const dispatch = useDispatch()
+
+    const [inputValue, setInputValue] = useState('')
+
+    const handleSubmit = () => {
+        if (inputValue) {
+            dispatch(addTodo(inputValue))
+            setInputValue('')
+        }
+    }
+
     return (
         <KeyboardAvoidingView style={styles.FormContainer} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <TextInput style={styles.InputField} placeholder={'할 일을 작성해 주세요.'} />
-            <Pressable style={styles.ButtonContainer}>
+            <TextInput
+                style={styles.InputField}
+                placeholder={'할 일을 작성해 주세요.'}
+                value={inputValue}
+                onChangeText={(text) => setInputValue(text)}
+                onSubmitEditing={handleSubmit}
+            />
+            <Pressable style={styles.ButtonContainer} onPress={handleSubmit}>
                 <Text style={styles.ButtonText}>등록</Text>
             </Pressable>
         </KeyboardAvoidingView>

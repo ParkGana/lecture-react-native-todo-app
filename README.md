@@ -2,7 +2,7 @@
 
 ---
 
-#### expo 프로젝트 생성
+### expo 프로젝트 생성
 
 npx create-expo-app . -t expo-template-blank-typescript
 

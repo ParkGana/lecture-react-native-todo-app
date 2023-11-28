@@ -26,3 +26,7 @@ expo install react-native-screens react-native-safe-area-context
 #### firebase 사용
 
 npm install firebase
+
+#### toast 사용
+
+npm install react-native-toast-message --save
